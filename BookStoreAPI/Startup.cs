@@ -30,9 +30,20 @@ namespace BookStoreAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddDbContext<BookStoreDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("BookStoreDB")));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyMethod()
+                           .AllowAnyOrigin()
+                    //.WithOrigins(bookstore.com) example
+                           .AllowAnyHeader();
+                });
+            });
+
+            services.AddControllers();
             services.AddTransient<IBooksService, BooksService>();
             services.AddTransient<IBooksRepository, BooksRepository>();
 
@@ -45,6 +56,7 @@ namespace BookStoreAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
 

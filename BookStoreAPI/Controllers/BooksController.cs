@@ -33,31 +33,46 @@ namespace BookStoreAPI.Controllers
         [HttpPost]
         public IActionResult Create(BookDto bookDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var response = _booksService.Create(bookDto.ToModel());
+                if (ModelState.IsValid)
+                {
+                    var response = _booksService.Create(bookDto.ToModel());
 
-                if (response.IsSuccessfull)
-                {
-                    return Ok(response.Message);
+                    if (response.IsSuccessfull)
+                    {
+                        return Ok(response.Message);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", response.Message);
+                        //return BadRequest(ModelState);
+                    }
                 }
-                else
-                {
-                    return BadRequest(response.Message);
-                }
+                return BadRequest(ModelState);
             }
-            else
+            catch (Exception)
             {
-                return BadRequest();
+
+                return StatusCode(500);
             }
+
         }
 
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetById(int id)
         {
-            var book = _booksService.GetById(id);
-            return Ok(book.ToBookDtoModel());
+            try
+            {
+                var book = _booksService.GetById(id);
+                return Ok(book.ToBookDtoModel());
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
 
         }
 
@@ -65,15 +80,39 @@ namespace BookStoreAPI.Controllers
         [Route("{id}")]
         public IActionResult Delete(int id)
         {
-            _booksService.Delete(id);
-            return Ok();
+            try
+            {
+                _booksService.Delete(id);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
         }
 
         [HttpPut]
         public IActionResult Update(BookDto book)
         {
-            _booksService.Update(book.ToModel());
-            return Ok();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _booksService.Update(book.ToModel());
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
         }
     }
 }
