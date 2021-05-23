@@ -47,7 +47,7 @@ namespace BookStoreAPI.Data
 
         public List<Book> GetWithFilters(string title, string author)
         {
-            var books = _dbContext.Books.AsQueryable();
+            var books = _dbContext.Books.Where(x=>x.Quantity > 0).AsQueryable();
 
             if(title != null)
             {

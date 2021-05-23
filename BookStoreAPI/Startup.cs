@@ -45,7 +45,10 @@ namespace BookStoreAPI
 
             services.AddControllers();
             services.AddTransient<IBooksService, BooksService>();
+            services.AddTransient<IOrdersService, OrdersService>();
+            
             services.AddTransient<IBooksRepository, BooksRepository>();
+            services.AddTransient<IOrdersRepository, OrdersRepository>();
 
         }
 

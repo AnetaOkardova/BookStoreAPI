@@ -72,8 +72,6 @@ namespace BookStoreAPI.Controllers
             {
                 return StatusCode(500);
             }
-
-
         }
 
         [HttpDelete]

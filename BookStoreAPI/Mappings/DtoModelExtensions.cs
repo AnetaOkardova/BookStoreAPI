@@ -23,5 +23,16 @@ namespace BookStoreAPI.Mappings
             };
 
         }
+        public static Order ToModel(this CreateOrderDto entity)
+        {
+            return new Order
+            {
+                FullName = entity.FullName,
+                Email = entity.Email,
+                Phone = entity.Phone,
+                Address = entity.Address,
+                Books = entity.BookIds.Select(x=> new BookOrder() { BookId = x}).ToList()
+            };
+        }
     }
 }
