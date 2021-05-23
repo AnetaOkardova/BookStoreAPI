@@ -20,7 +20,18 @@ namespace BookStoreAPI.Controllers
         {
             _ordersService = ordersService;
         }
+        /// <summary>
+        /// Creates new order from valid inputs.
+        /// </summary>
+        /// <param name="createOrderDto"></param>
+        /// <returns></returns>
+        /// <response code="200">No data</response>
+        /// <response code="400">If request data is not valid</response>    
+        /// <response code="500">If there is an exception caused by server error</response> 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create(CreateOrderDto createOrderDto)
         {
             try

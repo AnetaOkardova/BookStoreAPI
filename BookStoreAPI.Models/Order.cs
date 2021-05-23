@@ -10,6 +10,7 @@ namespace BookStoreAPI.Models
     {
         public int Id { get; set; }
         [Required]
+        [Display(Name = "Full name")]
         public string FullName { get; set; }
         [Required]
         public string Address { get; set; }

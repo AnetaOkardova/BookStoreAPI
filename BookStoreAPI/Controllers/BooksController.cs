@@ -22,14 +22,28 @@ namespace BookStoreAPI.Controllers
         {
             _booksService = booksService;
         }
+
+        /// <summary>
+        /// Returns all books with filter if any.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="author"></param>
+        /// <returns></returns>
+        /// <response code="200">Returns list of all books</response>
+
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Get(string title, string author)
         {
             var books = _booksService.GetWithFilters(title, author);
             var dtoModels = books.Select(x => x.ToBookDtoModel()).ToList();
             return Ok(dtoModels);
         }
-
+        /// <summary>
+        /// Creates new book from valid inputs.
+        /// </summary>
+        /// <param name="createBookDto"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Create(CreateBookDto createBookDto)
         {
@@ -58,9 +72,17 @@ namespace BookStoreAPI.Controllers
             }
 
         }
-
+        /// <summary>
+        /// Returns book for given ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">No data</response>
+        /// <response code="500">If there is an exception caused by server error</response>    
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetById(int id)
         {
             try
@@ -73,9 +95,17 @@ namespace BookStoreAPI.Controllers
                 return StatusCode(500);
             }
         }
-
+        /// <summary>
+        /// Deletes book for given ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">No data</response>
+        /// <response code="500">If there is an exception caused by server error</response>    
         [HttpDelete]
         [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Delete(int id)
         {
             try
@@ -89,8 +119,19 @@ namespace BookStoreAPI.Controllers
             }
 
         }
-
+        /// <summary>
+        /// Updates given book.
+        /// </summary>
+        /// <param name="book"></param>
+        /// <returns></returns>
+        /// <response code="200">No data</response>
+        /// <response code="400">If request data is not valid</response>    
+        /// <response code="500">If there is an exception caused by server error</response>    
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public IActionResult Update(BookDto book)
         {
             try
