@@ -31,13 +31,13 @@ namespace BookStoreAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(BookDto bookDto)
+        public IActionResult Create(CreateBookDto createBookDto)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var response = _booksService.Create(bookDto.ToModel());
+                    var response = _booksService.Create(createBookDto.ToModel());
 
                     if (response.IsSuccessfull)
                     {

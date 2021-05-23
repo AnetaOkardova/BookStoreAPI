@@ -43,6 +43,8 @@ namespace BookStoreAPI
                 });
             });
 
+            services.AddSwaggerGen();
+
             services.AddControllers();
             services.AddTransient<IBooksService, BooksService>();
             services.AddTransient<IOrdersService, OrdersService>();
@@ -62,6 +64,13 @@ namespace BookStoreAPI
             app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 

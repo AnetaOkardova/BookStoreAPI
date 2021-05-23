@@ -21,6 +21,19 @@ namespace BookStoreAPI.Mappings
                 Quantity = entity.Quantity,
                 Title = entity.Title
             };
+        }
+
+        public static Book ToModel(this CreateBookDto entity)
+        {
+            return new Book
+            {
+                Author = entity.Author,
+                Description = entity.Description,
+                Genre = entity.Genre,
+                Price = entity.Price,
+                Quantity = entity.Quantity,
+                Title = entity.Title
+            };
 
         }
         public static Order ToModel(this CreateOrderDto entity)
@@ -31,7 +44,7 @@ namespace BookStoreAPI.Mappings
                 Email = entity.Email,
                 Phone = entity.Phone,
                 Address = entity.Address,
-                Books = entity.BookIds.Select(x=> new BookOrder() { BookId = x}).ToList()
+                Books = entity.BookIds.Select(x => new BookOrder() { BookId = x }).ToList()
             };
         }
     }
