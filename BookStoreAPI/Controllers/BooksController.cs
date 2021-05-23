@@ -88,6 +88,10 @@ namespace BookStoreAPI.Controllers
             try
             {
                 var book = _booksService.GetById(id);
+                if(book == null)
+                {
+                    return BadRequest();
+                }
                 return Ok(book.ToBookDtoModel());
             }
             catch (Exception)
