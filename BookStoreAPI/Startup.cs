@@ -1,3 +1,4 @@
+using BookStoreAPI.Custom;
 using BookStoreAPI.Data;
 using BookStoreAPI.Data.Interfaces;
 using BookStoreAPI.Services;
@@ -46,6 +47,13 @@ namespace BookStoreAPI
                 });
             });
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = ApiKeyAuthenticationOptions.DefaultScheme;
+                options.DefaultChallengeScheme = ApiKeyAuthenticationOptions.DefaultScheme;
+            }).AddApiKeySupport(options => {});
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -53,13 +61,40 @@ namespace BookStoreAPI
                     Version = "v1",
                     Title = "Book store API",
                     Description = "Web API for working with book store",
-                    
+
                     Contact = new OpenApiContact
                     {
                         Name = "Aneta Okardova",
                         Email = "anetce_owen@yahoo.com",
                     }
                 });
+
+                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme()
+                {
+                    Description = "ApiKey Authorization header. Format: \"ApiKey {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "ApiKey"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme, Id = "ApiKey",
+                            },
+                            Scheme = "ApiKey",
+                            Name = "ApiKey",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>{}
+                    }
+                });
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -68,9 +103,11 @@ namespace BookStoreAPI
             services.AddControllers();
             services.AddTransient<IBooksService, BooksService>();
             services.AddTransient<IOrdersService, OrdersService>();
-            
+
             services.AddTransient<IBooksRepository, BooksRepository>();
             services.AddTransient<IOrdersRepository, OrdersRepository>();
+            services.AddTransient<IApplicationsRepository, ApplicationsRepository>();
+
 
         }
 
@@ -96,6 +133,8 @@ namespace BookStoreAPI
             });
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

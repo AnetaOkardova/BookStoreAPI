@@ -1,12 +1,10 @@
 ﻿using BookStoreAPI.DtoModels;
 using BookStoreAPI.Mappings;
 using BookStoreAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BookStoreAPI.Controllers
 {
@@ -29,6 +27,7 @@ namespace BookStoreAPI.Controllers
         /// <response code="400">If request data is not valid</response>    
         /// <response code="500">If there is an exception caused by server error</response> 
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

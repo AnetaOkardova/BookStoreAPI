@@ -15,6 +15,8 @@ namespace BookStoreAPI.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<BookOrder> BookOrder { get; set; }
+        public DbSet<Application> Applications { get; set; }
+
 
     }
 }

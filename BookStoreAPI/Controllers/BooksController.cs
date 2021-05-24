@@ -2,6 +2,7 @@
 using BookStoreAPI.Mappings;
 using BookStoreAPI.Models;
 using BookStoreAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -45,6 +46,7 @@ namespace BookStoreAPI.Controllers
         /// <param name="createBookDto"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         public IActionResult Create(CreateBookDto createBookDto)
         {
             try
@@ -107,6 +109,7 @@ namespace BookStoreAPI.Controllers
         /// <response code="200">No data</response>
         /// <response code="500">If there is an exception caused by server error</response>    
         [HttpDelete]
+        [Authorize]
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -132,6 +135,7 @@ namespace BookStoreAPI.Controllers
         /// <response code="400">If request data is not valid</response>    
         /// <response code="500">If there is an exception caused by server error</response>    
         [HttpPut]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
